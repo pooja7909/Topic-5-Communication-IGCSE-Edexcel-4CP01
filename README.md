@@ -1,20 +1,10 @@
-# 📡 IGCSE Computer Science – Topic 5: Communication
+#  IGCSE Computer Science – Topic 5: Communication
 ### Edexcel International GCSE · Specification 4CP01
 
 An interactive revision resource for **Topic 5: Communication** of the Edexcel IGCSE Computer Science course. Built as a set of self-contained HTML files — no frameworks, no install, just open in a browser.
 
 ---
 
-## 📂 File Structure
-
-```
-/
-├── index.html          ← Cover page (start here!)
-├── 5.1-networks.html   ← Module A: Networks
-├── 5.2-security.html   ← Module B: Network Security
-├── 5.3-internet.html   ← Module C: The Internet & WWW
-└── README.md
-```
 
 ---
 
@@ -55,23 +45,9 @@ Each module includes:
 | 📝 Exam Questions | Worked exam-style practice |
 | 🎯 Activities | Drag & drop, true/false, type-the-term tasks |
 
----
 
-## 🚀 How to Use
 
-### Option 1 – Open locally
-1. Download or clone this repository
-2. Open `index.html` in any modern browser
-3. Click a module card to begin revising
-
-### Option 2 – GitHub Pages
-1. Go to your repo **Settings → Pages**
-2. Set source to `main` branch, root folder
-3. Your site will be live at `https://<your-username>.github.io/<repo-name>/`
-
----
-
-## 🛠️ Built With
+##  Built With
 
 - Plain HTML, CSS & JavaScript — no dependencies
 - Google Fonts: Permanent Marker, Caveat, Patrick Hand, Kalam
@@ -91,6 +67,4 @@ Each module includes:
 
 ---
 
-## 📄 Licence
 
-Free to use for educational purposes. Not affiliated with Pearson or Edexcel.
