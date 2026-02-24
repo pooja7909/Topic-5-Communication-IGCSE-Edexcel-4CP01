@@ -34,7 +34,6 @@
     min-height: 100vh;
   }
 
-  /* Notebook lines */
   body::before {
     content: '';
     position: fixed;
@@ -48,7 +47,6 @@
     z-index: 0;
   }
 
-  /* Red margin line */
   body::after {
     content: '';
     position: fixed;
@@ -67,7 +65,6 @@
     z-index: 1;
   }
 
-  /* ===== HEADER ===== */
   .hero {
     text-align: center;
     padding: 50px 0 30px;
@@ -130,28 +127,6 @@
     display: block;
   }
 
-  /* ===== TOPICS COVERED ===== */
-  .topics-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-    margin: 30px 0 10px;
-  }
-
-  .topic-chip {
-    font-family: 'Caveat', cursive;
-    font-size: 1rem;
-    font-weight: 700;
-    padding: 5px 14px;
-    border: 2px solid var(--ink);
-    border-radius: 20px;
-    background: white;
-    box-shadow: 2px 2px 0 var(--ink);
-    transform: rotate(var(--r, 0deg));
-  }
-
-  /* ===== SECTION LABEL ===== */
   .section-label {
     font-family: 'Permanent Marker', cursive;
     font-size: 1.6rem;
@@ -167,7 +142,6 @@
     color: var(--coral);
   }
 
-  /* ===== MODULE CARDS ===== */
   .modules-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -227,14 +201,6 @@
     z-index: 1;
   }
 
-  .card-subtitle {
-    font-family: 'Caveat', cursive;
-    font-size: 1rem;
-    font-weight: 600;
-    margin-top: 4px;
-    opacity: 0.75;
-  }
-
   .card-body {
     padding: 14px 20px 18px;
     flex: 1;
@@ -260,73 +226,47 @@
   }
 
   .card-footer {
-    padding: 12px 20px;
+    padding: 10px 20px;
     border-top: 2px dashed rgba(26,26,46,0.18);
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     font-family: 'Caveat', cursive;
     font-size: 1rem;
-    font-weight: 700;
+    opacity: 0.7;
   }
 
   .card-arrow {
-    font-size: 1.4rem;
-    transition: transform 0.2s;
+    font-size: 1.3rem;
+    font-family: 'Permanent Marker', cursive;
+    opacity: 1;
   }
 
-  .module-card:hover .card-arrow { transform: translateX(4px); }
+  .card-a .card-header { background: var(--light-teal); }
+  .card-b .card-header { background: var(--light-coral); }
+  .card-c .card-header { background: var(--light-blue); }
 
-  /* Card colour themes */
-  .card-a .card-header { background: #fff9e6; }
-  .card-a { --accent: var(--orange); }
-  .card-a .card-header { border-left: 5px solid var(--orange); }
-  .card-a .card-footer { background: #fff9e6; color: var(--orange); }
-
-  .card-b .card-header { background: #e3f2fd; }
-  .card-b { --accent: var(--blue); }
-  .card-b .card-header { border-left: 5px solid var(--blue); }
-  .card-b .card-footer { background: #e3f2fd; color: var(--blue); }
-
-  .card-c .card-header { background: var(--light-teal); }
-  .card-c { --accent: var(--teal); }
-  .card-c .card-header { border-left: 5px solid var(--teal); }
-  .card-c .card-footer { background: var(--light-teal); color: #059669; }
-
-  /* ===== STICKY NOTES / TIPS ===== */
   .sticky-row {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 18px;
-    margin: 48px 0 20px;
+    margin: 40px 0 10px;
   }
 
   .sticky {
-    flex: 1;
-    min-width: 200px;
-    padding: 18px 16px 22px;
-    border-radius: 2px;
-    box-shadow: 3px 4px 10px rgba(0,0,0,0.15);
-    position: relative;
+    border-radius: 4px;
+    padding: 16px 18px;
     font-family: 'Kalam', cursive;
     font-size: 0.95rem;
-    line-height: 1.5;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.12);
+    position: relative;
+    transform: rotate(var(--sr, 0deg));
   }
 
-  .sticky::before {
-    content: '';
-    position: absolute;
-    top: -8px; left: 50%;
-    transform: translateX(-50%);
-    width: 30px; height: 16px;
-    background: rgba(0,0,0,0.15);
-    border-radius: 2px;
-  }
-
-  .sticky-y { background: var(--light-yellow); transform: rotate(-1.5deg); }
-  .sticky-p { background: var(--light-coral); transform: rotate(1.2deg); }
-  .sticky-g { background: var(--light-teal); transform: rotate(-0.7deg); }
-  .sticky-b { background: var(--light-blue); transform: rotate(1.8deg); }
+  .sticky-y { background: #fff9c4; --sr: -1deg; }
+  .sticky-p { background: #f3e5f5; --sr: 0.8deg; }
+  .sticky-g { background: #d8f3dc; --sr: -0.5deg; }
+  .sticky-b { background: #e3f2fd; --sr: 1deg; }
 
   .sticky strong {
     font-family: 'Caveat', cursive;
@@ -335,7 +275,6 @@
     margin-bottom: 6px;
   }
 
-  /* ===== PROGRESS TRACKER ===== */
   .progress-box {
     border: 3px solid var(--ink);
     border-radius: 10px;
@@ -382,7 +321,6 @@
 
   .check-item.done { text-decoration: line-through; opacity: 0.55; }
 
-  /* ===== FOOTER ===== */
   .footer-note {
     text-align: center;
     margin-top: 60px;
@@ -393,7 +331,6 @@
     transform: rotate(-0.5deg);
   }
 
-  /* ===== DOODLES ===== */
   .doodle-corner {
     position: absolute;
     opacity: 0.07;
@@ -402,23 +339,17 @@
     user-select: none;
   }
 
-  /* ===== ANIMATIONS ===== */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  .module-card {
-    animation: fadeUp 0.5s ease both;
-  }
-
+  .module-card { animation: fadeUp 0.5s ease both; }
   .module-card:nth-child(1) { animation-delay: 0.1s; }
   .module-card:nth-child(2) { animation-delay: 0.22s; }
   .module-card:nth-child(3) { animation-delay: 0.34s; }
-
   .hero { animation: fadeUp 0.4s ease both; }
 
-  /* Responsive */
   @media (max-width: 600px) {
     .page-wrap { padding: 20px 16px 60px 24px; }
     .hero-title { font-size: 2.6rem; }
@@ -429,7 +360,6 @@
 <body>
 <div class="page-wrap">
 
-  <!-- Doodle decorations -->
   <span class="doodle-corner" style="top:30px; right:20px; font-size:7rem; transform:rotate(12deg);">📡</span>
   <span class="doodle-corner" style="bottom:200px; right:10px; font-size:5rem; transform:rotate(-8deg);">🌐</span>
 
@@ -441,15 +371,12 @@
     <span class="hero-subtitle">Networks · Protocols · Security · The Internet</span>
   </div>
 
-
-
-  <!-- Modules -->
   <div class="section-label">Choose your revision module</div>
 
   <div class="modules-grid">
 
-    <!-- Card 1 -->
-    <a class="module-card card-a" href="index.html" title="Open Module A">
+    <!-- Card 1 — links to 5.1.html -->
+    <a class="module-card card-a" href="5.1.html" title="Open Module A" target="_blank">
       <div class="card-header">
         <span class="card-num">A</span>
         <span class="card-icon">🖧</span>
@@ -460,7 +387,7 @@
           <li>LANs &amp; WANs</li>
           <li>Client-server &amp; peer-to-peer models</li>
           <li>Wired &amp; wireless transmission media</li>
-          <li>Network topologies (star, bus, mesh)</li>
+          <li>Network topologies (bus, ring, star, mesh)</li>
           <li>TCP/IP layers</li>
         </ul>
       </div>
@@ -470,8 +397,8 @@
       </div>
     </a>
 
-    <!-- Card 2 -->
-    <a class="module-card card-b" href="index.html" title="Open Module B">
+    <!-- Card 2 — links to 5.2.html -->
+    <a class="module-card card-b" href="5.2.html" title="Open Module B" target="_blank">
       <div class="card-header">
         <span class="card-num">B</span>
         <span class="card-icon">🔒</span>
@@ -492,8 +419,8 @@
       </div>
     </a>
 
-    <!-- Card 3 -->
-    <a class="module-card card-c" href="index.html" title="Open Module C">
+    <!-- Card 3 — links to 5.3.html -->
+    <a class="module-card card-c" href="5.3.html" title="Open Module C" target="_blank">
       <div class="card-header">
         <span class="card-num">C</span>
         <span class="card-icon">🌐</span>
@@ -546,7 +473,7 @@
       <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I can explain LAN vs WAN</label>
       <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I know client-server vs peer-to-peer</label>
       <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I can describe wired vs wireless transmission media</label>
-      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I understand network topologies (star, bus, mesh)</label>
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I understand network topologies (bus, ring, star, mesh)</label>
       <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I can name &amp; explain the 4 TCP/IP layers</label>
       <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I know what protocols operate at each TCP/IP layer</label>
       <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I understand bandwidth &amp; latency</label>
