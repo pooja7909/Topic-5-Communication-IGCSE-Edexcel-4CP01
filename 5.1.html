@@ -183,6 +183,90 @@
   .gen-table th { padding:9px 10px; text-align:left; border:1px solid #ddd; background:#f5f5f5; font-family:'Permanent Marker',cursive; font-size:0.85rem; }
   .gen-table td { padding:8px 10px; border:1px solid #ddd; vertical-align:top; }
   .gen-table tr:nth-child(even) td { background:#fafafa; }
+
+  /* ── DIAGRAM ZOOM LIGHTBOX ──────────────────────── */
+  .svg-zoom-wrap {
+    position: relative;
+    cursor: zoom-in;
+    display: block;
+    margin: 0 auto;
+  }
+  .svg-zoom-wrap::after {
+    content: '🔍 Click to zoom';
+    position: absolute;
+    bottom: 6px;
+    right: 8px;
+    background: rgba(26,26,46,0.75);
+    color: #fff;
+    font-family: 'Caveat', cursive;
+    font-size: 0.8rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .svg-zoom-wrap:hover::after { opacity: 1; }
+  .svg-zoom-wrap svg { display: block; width: 100%; }
+
+  /* lightbox overlay */
+  #svg-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.82);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    cursor: zoom-out;
+  }
+  #svg-lightbox.open { display: flex; }
+  #svg-lightbox-inner {
+    background: #fff;
+    border-radius: 14px;
+    padding: 18px;
+    max-width: 95vw;
+    max-height: 92vh;
+    overflow: auto;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    position: relative;
+    cursor: default;
+  }
+  #svg-lightbox-inner svg {
+    width: 100%;
+    height: auto;
+    max-height: 80vh;
+    display: block;
+  }
+  #svg-lightbox-close {
+    position: absolute;
+    top: 10px; right: 14px;
+    font-size: 1.6rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #555;
+    line-height: 1;
+    z-index: 10000;
+  }
+  #svg-lightbox-close:hover { color: #000; }
+  #svg-lightbox-dl {
+    display: block;
+    margin: 12px auto 0;
+    text-align: center;
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    color: #118ab2;
+    background: #e3f2fd;
+    border: 2px solid #118ab2;
+    border-radius: 8px;
+    padding: 6px 20px;
+    cursor: pointer;
+    width: fit-content;
+  }
+  #svg-lightbox-dl:hover { background: #118ab2; color: #fff; }
+
 </style>
 </head>
 <body>
@@ -1989,5 +2073,121 @@ function resetMatch() { matchCount = 0; selectedLeft = null; document.getElement
 buildTF();
 buildMatch();
 </script>
+
+<!-- Diagram Zoom Lightbox -->
+<div id="svg-lightbox" onclick="closeLightbox(event)">
+  <div id="svg-lightbox-inner" onclick="event.stopPropagation()">
+    <button id="svg-lightbox-close" onclick="closeLightbox(null)" title="Close">✕</button>
+    <div id="svg-lightbox-content"></div>
+    <button id="svg-lightbox-dl" onclick="downloadSVG()">⬇ Download diagram as PNG</button>
+  </div>
+</div>
+
+
+<script>
+// ── Diagram zoom lightbox ─────────────────────────────
+let _currentSVGContent = '';
+function openLightbox(el) {
+  const svgEl = el.querySelector('svg');
+  if (!svgEl) return;
+  _currentSVGContent = svgEl.outerHTML;
+  document.getElementById('svg-lightbox-content').innerHTML = _currentSVGContent;
+  document.getElementById('svg-lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox(e) {
+  if (e && e.target !== document.getElementById('svg-lightbox') && e.type !== 'click') return;
+  document.getElementById('svg-lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeLightbox(null); });
+function downloadSVG() {
+  const svgEl = document.querySelector('#svg-lightbox-content svg');
+  if (!svgEl) return;
+
+  // Clone SVG and inline all computed styles + safe fonts
+  const clone = svgEl.cloneNode(true);
+
+  // Set explicit dimensions
+  const vb = svgEl.viewBox.baseVal;
+  const W = vb.width || svgEl.getBoundingClientRect().width || 680;
+  const H = vb.height || svgEl.getBoundingClientRect().height || 400;
+  clone.setAttribute('width', W);
+  clone.setAttribute('height', H);
+  clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+
+  // Replace any custom fonts with safe web-safe fallback
+  clone.querySelectorAll('[font-family],[style]').forEach(el => {
+    if (el.getAttribute('font-family')) {
+      el.setAttribute('font-family', 'Arial, sans-serif');
+    }
+    if (el.style && el.style.fontFamily) {
+      el.style.fontFamily = 'Arial, sans-serif';
+    }
+  });
+
+  // Also fix any text elements
+  clone.querySelectorAll('text, tspan').forEach(el => {
+    el.setAttribute('font-family', 'Arial, sans-serif');
+  });
+
+  // Add a white background rect at the back
+  const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  bg.setAttribute('width', W);
+  bg.setAttribute('height', H);
+  bg.setAttribute('fill', 'white');
+  clone.insertBefore(bg, clone.firstChild);
+
+  const svgData = new XMLSerializer().serializeToString(clone);
+  // Use data URL instead of blob URL to avoid CORS issues
+  const dataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgData);
+
+  const scale = 3;
+  const canvas = document.createElement('canvas');
+  canvas.width = W * scale;
+  canvas.height = H * scale;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(scale, scale);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, W, H);
+
+  const img = new Image();
+  img.onload = function() {
+    ctx.drawImage(img, 0, 0, W, H);
+    const a = document.createElement('a');
+    a.download = 'diagram.png';
+    a.href = canvas.toDataURL('image/png');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+  img.onerror = function() {
+    const a = document.createElement('a');
+    a.download = 'diagram.svg';
+    a.href = dataUrl;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+  img.src = dataUrl;
+}
+// Wrap all inline SVGs with clickable containers
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.notes-body svg, .mindmap-wrap svg, .eq-ctx svg, .act-bdy svg, .notes-section svg').forEach(function(svg) {
+    if (svg.closest('.svg-zoom-wrap')) return; // already wrapped
+    const wrap = document.createElement('div');
+    wrap.className = 'svg-zoom-wrap';
+    // copy width/max-width style from svg to wrap
+    if (svg.style.maxWidth) wrap.style.maxWidth = svg.style.maxWidth;
+    wrap.style.margin = svg.style.margin || '0 auto';
+    svg.parentNode.insertBefore(wrap, svg);
+    wrap.appendChild(svg);
+    svg.removeAttribute('style'); // clean up inline style on svg itself
+    wrap.onclick = function() { openLightbox(wrap); };
+    wrap.setAttribute('title', 'Click to zoom diagram');
+  });
+});
+</script>
+
 </body>
 </html>
